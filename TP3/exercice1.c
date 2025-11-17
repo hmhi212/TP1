@@ -10,12 +10,19 @@ int main() {
     }
     int width = n * n;
     int max_height = 3* n-1 ;
-    char img [11][11] ;
+    char img [100][100] ;
     for (int i=0 ; i<width ; i++){
         for(int j=0 ; j<max_height ; j++){
-            img[i][j] ='';
+            img[i][j] ='0';
             
         }
+        
+    }
+    for (int i=0 ; i<width ; i++){
+        for(int j=0 ; j<max_height ; j++){
+            printf("%c",img[i][j]);
+        }
+        printf("\n");
     }
 }
    
