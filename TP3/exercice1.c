@@ -9,12 +9,12 @@ int main() {
         printf(" entreez une taille valide");
     }
     int width = n * n;
-    int max_height = 3* n-1 ;
-    char img [100][100] ;
-    for (int i=0 ; i<width ; i++){
-        for(int j=0 ; j<max_height ; j++){
-            img[i][j] =' ';
-            
+    int max_height = n + 1;
+    char img[100][100];
+    for (int i = 0; i < max_height; i++) {
+        for (int j = 0; j < width; j++) {
+            img[i][j] = ' ';
+           
         }
         
     }
@@ -28,18 +28,23 @@ int main() {
             }
         }
     }
+        for (int j = 0; j <= mid - n; j++) {
+    img[n-1][j] = '_';
+    }
 
-    for(int i=0; i<= max_height; i++){
+
+    for (int j = mid + n; j < width; j++) {
+        img[n-1][j] = '_';
+    }
+   
+    
+     for(int i=0; i<= max_height; i++){
         for(int j=0; j<=width; j++){
             printf("%c",img[i][j]);
             
         }
         printf("\n");
     }
-    for (int j = mid - n; j <= mid + n; j++) {
-        img[n-1][j] = '_';
-   }
-    
  return 0;       
 }
    
