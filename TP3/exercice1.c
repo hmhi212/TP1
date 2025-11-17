@@ -13,16 +13,33 @@ int main() {
     char img [100][100] ;
     for (int i=0 ; i<width ; i++){
         for(int j=0 ; j<max_height ; j++){
-            img[i][j] ='0';
+            img[i][j] =' ';
             
         }
         
     }
-    for (int i=0 ; i<width ; i++){
-        for(int j=0 ; j<max_height ; j++){
+   int mid = width / 2;
+    for (int i = 0; i < n; i++) {
+        for (int j = mid - i; j <= mid + i; j++) {
+            if (j == mid - i || j == mid + i) {
+                img[i][j] = 'A'; 
+            } else {
+                img[i][j] = 'S'; 
+            }
+        }
+    }
+
+    for(int i=0; i<= max_height; i++){
+        for(int j=0; j<=width; j++){
             printf("%c",img[i][j]);
+            
         }
         printf("\n");
     }
+    for (int j = mid - n; j <= mid + n; j++) {
+        img[n-1][j] = '_';
+   }
+    
+ return 0;       
 }
    
