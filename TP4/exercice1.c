@@ -6,6 +6,7 @@ int saisir_nombre_eleves(int MAX_E);
 void saisir_notes(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E]);
 void afficher_notes(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E]);
 float calculer_moyenne_eleve(int indiceEleve, int NBR_C, int MAX_E, int notes[][MAX_E]);
+float calculer_moyenne_generale(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E]);
 
 void afficher_menu()
 {
@@ -106,11 +107,24 @@ float calculer_moyenne_eleve(int indiceEleve, int NBR_C, int MAX_E, int notes[][
     return (float)somme / NBR_C; 
 }
 
+
+float calculer_moyenne_generale(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E])
+{
+    if (nbEleves == 0) return 0.0f;
+    
+    float somme_moyennes = 0.0f;
+    
+    for (int i = 0; i < nbEleves; i++) {
+        somme_moyennes += calculer_moyenne_eleve(i, NBR_C, MAX_E, notes);
+    }
+    
+    return somme_moyennes / nbEleves;
+}
+
 int main()
 {
     const int MAX_ELEVES = 30;
     const int NBR_CONTROLES_LOCAL = 3;
-    
     
     int notes[MAX_ELEVES][NBR_CONTROLES_LOCAL];
     int nbEleves = 0;
@@ -143,7 +157,14 @@ int main()
                     while (getchar() != '\n'); 
                 }
             }
-        } else if (choix >= 5 && choix <= 6) {
+        } else if (choix == 5) {
+            if (nbEleves == 0) {
+                printf("Aucune note saisie.\n");
+            } else {
+                float moyenne_g = calculer_moyenne_generale(nbEleves, NBR_CONTROLES_LOCAL, MAX_ELEVES, notes);
+                printf("Moyenne generale de la classe: %.2f\n", moyenne_g); 
+            }
+        } else if (choix == 6) {
             printf("Option %d selectionnee. Non encore implementee.\n", choix);
         } else {
             printf("Choix invalide. Veuillez reessayer.\n");
