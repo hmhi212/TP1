@@ -1,13 +1,11 @@
 #include <stdio.h>
 
-#define MAX_ELEVES 30
-#define NBR_CONTROLES 3
-
 void afficher_menu();
 int lire_choix();
-int saisir_nombre_eleves();
-void saisir_notes(int nbEleves, int notes[][NBR_CONTROLES]);
-void afficher_notes(int nbEleves, int notes[][NBR_CONTROLES]);
+int saisir_nombre_eleves(int MAX_E);
+void saisir_notes(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E]);
+void afficher_notes(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E]);
+float calculer_moyenne_eleve(int indiceEleve, int NBR_C, int MAX_E, int notes[][MAX_E]);
 
 void afficher_menu()
 {
@@ -32,17 +30,17 @@ int lire_choix()
     return choix;
 }
 
-int saisir_nombre_eleves()
+int saisir_nombre_eleves(int MAX_E)
 {
     int nb = 0;
     
-    while (nb < 1 || nb > MAX_ELEVES) {
-        printf("Entrez le nombre d'eleves (1 a %d): ", MAX_ELEVES);
+    while (nb < 1 || nb > MAX_E) {
+        printf("Entrez le nombre d'eleves (1 a %d): ", MAX_E);
         if (scanf("%d", &nb) != 1) {
             printf("Valeur invalide.\n");
             while (getchar() != '\n');
             nb = 0;
-        } else if (nb < 1 || nb > MAX_ELEVES) {
+        } else if (nb < 1 || nb > MAX_E) {
             printf("Valeur invalide.\n");
         }
     }
@@ -50,18 +48,18 @@ int saisir_nombre_eleves()
     return nb;
 }
 
-void saisir_notes(int nbEleves, int notes[][NBR_CONTROLES])
+void saisir_notes(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E])
 {
     if (nbEleves == 0) {
         printf("Veuillez d'abord saisir le nombre d'eleves (Option 1).\n");
         return;
     }
 
-    printf("Saisie des notes pour %d eleves et %d controles.\n", nbEleves, NBR_CONTROLES);
+    printf("Saisie des notes pour %d eleves et %d controles.\n", nbEleves, NBR_C);
 
     for (int i = 0; i < nbEleves; i++) {
         printf("Eleve %d:\n", i + 1);
-        for (int j = 0; j < NBR_CONTROLES; j++) {
+        for (int j = 0; j < NBR_C; j++) {
             int note = -1;
             
             while (note < 0 || note > 20) {
@@ -79,8 +77,7 @@ void saisir_notes(int nbEleves, int notes[][NBR_CONTROLES])
     }
 }
 
-
-void afficher_notes(int nbEleves, int notes[][NBR_CONTROLES])
+void afficher_notes(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E])
 {
     if (nbEleves == 0) {
         printf("Aucune note saisie.\n");
@@ -92,18 +89,31 @@ void afficher_notes(int nbEleves, int notes[][NBR_CONTROLES])
     printf("---------------------------\n");
 
     for (int i = 0; i < nbEleves; i++) {
-        printf("%d\t", i + 1); 
-        for (int j = 0; j < NBR_CONTROLES; j++) {
-            printf("%d\t", notes[i][j]); 
+        printf("%d\t", i + 1);
+        for (int j = 0; j < NBR_C; j++) {
+            printf("%d\t", notes[i][j]);
         }
         printf("\n");
     }
 }
 
+float calculer_moyenne_eleve(int indiceEleve, int NBR_C, int MAX_E, int notes[][MAX_E])
+{
+    int somme = 0;
+    for (int j = 0; j < NBR_C; j++) {
+        somme += notes[indiceEleve][j]; 
+    }
+    return (float)somme / NBR_C; 
+}
+
 int main()
 {
-    int notes[MAX_ELEVES][NBR_CONTROLES];
-    int nbEleves = 0; 
+    const int MAX_ELEVES = 30;
+    const int NBR_CONTROLES_LOCAL = 3;
+    
+    
+    int notes[MAX_ELEVES][NBR_CONTROLES_LOCAL];
+    int nbEleves = 0;
     int choix = -1;
 
     while (choix != 0) {
@@ -113,13 +123,27 @@ int main()
         if (choix == 0) {
             printf("Au revoir.\n");
         } else if (choix == 1) {
-            nbEleves = saisir_nombre_eleves();
+            nbEleves = saisir_nombre_eleves(MAX_ELEVES);
             printf("Nombre d'eleves defini : %d\n", nbEleves);
         } else if (choix == 2) {
-            saisir_notes(nbEleves, notes);
+            saisir_notes(nbEleves, NBR_CONTROLES_LOCAL, MAX_ELEVES, notes);
         } else if (choix == 3) {
-            afficher_notes(nbEleves, notes);
-        } else if (choix >= 4 && choix <= 6) {
+            afficher_notes(nbEleves, NBR_CONTROLES_LOCAL, MAX_ELEVES, notes);
+        } else if (choix == 4) {
+            if (nbEleves == 0) {
+                printf("Aucune note saisie.\n");
+            } else {
+                int indice;
+                printf("Entrez l'indice de l'eleve (1 a %d): ", nbEleves);
+                if (scanf("%d", &indice) == 1 && indice >= 1 && indice <= nbEleves) {
+                    float moyenne = calculer_moyenne_eleve(indice - 1, NBR_CONTROLES_LOCAL, MAX_ELEVES, notes); 
+                    printf("Moyenne de l'eleve %d: %.2f\n", indice, moyenne);
+                } else {
+                    printf("Indice d'eleve invalide.\n");
+                    while (getchar() != '\n'); 
+                }
+            }
+        } else if (choix >= 5 && choix <= 6) {
             printf("Option %d selectionnee. Non encore implementee.\n", choix);
         } else {
             printf("Choix invalide. Veuillez reessayer.\n");
