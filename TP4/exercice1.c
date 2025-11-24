@@ -5,6 +5,7 @@
 
 void afficher_menu();
 int lire_choix();
+int saisir_nombre_eleves();
 
 void afficher_menu()
 {
@@ -29,11 +30,31 @@ int lire_choix()
     return choix;
 }
 
+
+int saisir_nombre_eleves()
+{
+    int nb = 0;
+    
+    
+    while (nb < 1 || nb > MAX_ELEVES) {
+        printf("Entrez le nombre d'eleves (1 a %d): ", MAX_ELEVES);
+        if (scanf("%d", &nb) != 1) {
+            printf("Valeur invalide.\n");
+            while (getchar() != '\n');
+            nb = 0; 
+        } else if (nb < 1 || nb > MAX_ELEVES) {
+            printf("Valeur invalide.\n");
+        }
+    }
+
+    return nb;
+}
+
 int main()
 {
     int notes[MAX_ELEVES][NBR_CONTROLES];
     int nbEleves = 0; 
-    int choix = -1; 
+    int choix = -1;
 
     while (choix != 0) {
         afficher_menu(); 
@@ -41,12 +62,14 @@ int main()
 
         if (choix == 0) {
             printf("Au revoir.\n");
-        } else if (choix >= 1 && choix <= 6) {
-            printf("Option %d selectionnee.\n", choix);
+        } else if (choix == 1) {
+            nbEleves = saisir_nombre_eleves();
+            printf("Nombre d'eleves defini : %d\n", nbEleves);
+        } else if (choix >= 2 && choix <= 6) {
+            printf("Option %d selectionnee. Non encore implementee.\n", choix);
         } else {
             printf("Choix invalide. Veuillez reessayer.\n");
         }
-
     }
 
     return 0;
