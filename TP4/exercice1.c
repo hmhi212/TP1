@@ -8,6 +8,7 @@ void afficher_notes(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E]);
 float calculer_moyenne_eleve(int indiceEleve, int NBR_C, int MAX_E, int notes[][MAX_E]);
 float calculer_moyenne_generale(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E]);
 int trouver_meilleure_note_controle(int indiceControle, int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E]);
+void afficher_meilleures_notes(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E]);
 
 void afficher_menu()
 {
@@ -121,7 +122,6 @@ float calculer_moyenne_generale(int nbEleves, int NBR_C, int MAX_E, int notes[][
     return somme_moyennes / nbEleves;
 }
 
-// Implémentation de l'Étape 8
 int trouver_meilleure_note_controle(int indiceControle, int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E])
 {
     if (nbEleves == 0) return -1;
@@ -129,12 +129,24 @@ int trouver_meilleure_note_controle(int indiceControle, int nbEleves, int NBR_C,
     int max_note = -1;
     
     for (int i = 0; i < nbEleves; i++) {
-        // Chercher le maximum dans la colonne correspondant à indiceControle
         if (notes[i][indiceControle] > max_note) {
             max_note = notes[i][indiceControle];
         }
     }
     return max_note;
+}
+
+void afficher_meilleures_notes(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E])
+{
+    if (nbEleves == 0) {
+        printf("Veuillez d'abord saisir les notes.\n");
+        return;
+    }
+
+    for (int j = 0; j < NBR_C; j++) {
+        int meilleure_note = trouver_meilleure_note_controle(j, nbEleves, NBR_C, MAX_E, notes);
+        printf("Meilleure note au controle %d: %d\n", j + 1, meilleure_note);
+    }
 }
 
 int main()
@@ -181,7 +193,7 @@ int main()
                 printf("Moyenne generale de la classe: %.2f\n", moyenne_g); 
             }
         } else if (choix == 6) {
-            printf("Option %d selectionnee. Non encore implementee.\n", choix);
+            afficher_meilleures_notes(nbEleves, NBR_CONTROLES_LOCAL, MAX_ELEVES, notes);
         } else {
             printf("Choix invalide. Veuillez reessayer.\n");
         }
