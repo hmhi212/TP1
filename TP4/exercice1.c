@@ -7,6 +7,7 @@ void saisir_notes(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E]);
 void afficher_notes(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E]);
 float calculer_moyenne_eleve(int indiceEleve, int NBR_C, int MAX_E, int notes[][MAX_E]);
 float calculer_moyenne_generale(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E]);
+int trouver_meilleure_note_controle(int indiceControle, int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E]);
 
 void afficher_menu()
 {
@@ -107,7 +108,6 @@ float calculer_moyenne_eleve(int indiceEleve, int NBR_C, int MAX_E, int notes[][
     return (float)somme / NBR_C; 
 }
 
-
 float calculer_moyenne_generale(int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E])
 {
     if (nbEleves == 0) return 0.0f;
@@ -119,6 +119,22 @@ float calculer_moyenne_generale(int nbEleves, int NBR_C, int MAX_E, int notes[][
     }
     
     return somme_moyennes / nbEleves;
+}
+
+// Implémentation de l'Étape 8
+int trouver_meilleure_note_controle(int indiceControle, int nbEleves, int NBR_C, int MAX_E, int notes[][MAX_E])
+{
+    if (nbEleves == 0) return -1;
+
+    int max_note = -1;
+    
+    for (int i = 0; i < nbEleves; i++) {
+        // Chercher le maximum dans la colonne correspondant à indiceControle
+        if (notes[i][indiceControle] > max_note) {
+            max_note = notes[i][indiceControle];
+        }
+    }
+    return max_note;
 }
 
 int main()
