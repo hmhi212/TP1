@@ -7,6 +7,7 @@ void afficher_menu();
 int lire_choix();
 int saisir_nombre_eleves();
 void saisir_notes(int nbEleves, int notes[][NBR_CONTROLES]);
+void afficher_notes(int nbEleves, int notes[][NBR_CONTROLES]);
 
 void afficher_menu()
 {
@@ -49,7 +50,6 @@ int saisir_nombre_eleves()
     return nb;
 }
 
-
 void saisir_notes(int nbEleves, int notes[][NBR_CONTROLES])
 {
     if (nbEleves == 0) {
@@ -62,20 +62,41 @@ void saisir_notes(int nbEleves, int notes[][NBR_CONTROLES])
     for (int i = 0; i < nbEleves; i++) {
         printf("Eleve %d:\n", i + 1);
         for (int j = 0; j < NBR_CONTROLES; j++) {
-            int note = -1; 
+            int note = -1;
             
             while (note < 0 || note > 20) {
                 printf("Note du controle %d (0 a 20): ", j + 1);
                 if (scanf("%d", &note) != 1) {
                     printf("Note invalide. Doit etre entre 0 et 20.\n");
                     while (getchar() != '\n');
-                    note = -1; 
+                    note = -1;
                 } else if (note < 0 || note > 20) {
                     printf("Note invalide. Doit etre entre 0 et 20.\n");
                 }
             }
             notes[i][j] = note;
         }
+    }
+}
+
+
+void afficher_notes(int nbEleves, int notes[][NBR_CONTROLES])
+{
+    if (nbEleves == 0) {
+        printf("Aucune note saisie.\n");
+        return;
+    }
+    
+    printf("\n--- Tableau des notes ---\n");
+    printf("Eleve\tC1\tC2\tC3\n"); 
+    printf("---------------------------\n");
+
+    for (int i = 0; i < nbEleves; i++) {
+        printf("%d\t", i + 1); 
+        for (int j = 0; j < NBR_CONTROLES; j++) {
+            printf("%d\t", notes[i][j]); 
+        }
+        printf("\n");
     }
 }
 
@@ -95,9 +116,11 @@ int main()
             nbEleves = saisir_nombre_eleves();
             printf("Nombre d'eleves defini : %d\n", nbEleves);
         } else if (choix == 2) {
-           
             saisir_notes(nbEleves, notes);
-        } else if (choix >= 3 && choix <= 6) {
+        } else if (choix == 3) {
+           
+            afficher_notes(nbEleves, notes);
+        } else if (choix >= 4 && choix <= 6) {
             printf("Option %d selectionnee. Non encore implementee.\n", choix);
         } else {
             printf("Choix invalide. Veuillez reessayer.\n");
