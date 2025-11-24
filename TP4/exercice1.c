@@ -118,7 +118,6 @@ int main()
         } else if (choix == 2) {
             saisir_notes(nbEleves, notes);
         } else if (choix == 3) {
-           
             afficher_notes(nbEleves, notes);
         } else if (choix >= 4 && choix <= 6) {
             printf("Option %d selectionnee. Non encore implementee.\n", choix);
