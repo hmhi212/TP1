@@ -60,11 +60,51 @@ void ajouterConsommation(int *conso, int size, const char *categories[])
 }
 
 
-void afficherResume(int *conso, int size, const char *categories[], const char *emojis_fixes[], const char *h_bonbons[], const char *h_legumes[], const char *h_fruits[], int max_val)
+
+
+int humeurBonbons(int nbBonbons)
 {
-    
+    if (nbBonbons >= 0 && nbBonbons <= 3) return 0;
+    if (nbBonbons >= 4 && nbBonbons <= 7) return 1;
+    if (nbBonbons >= 8 && nbBonbons <= 12) return 2;
+    return 3;
 }
 
+int humeurLegumes(int nbLegumes)
+{
+    if (nbLegumes >= 0 && nbLegumes <= 1) return 0;
+    if (nbLegumes >= 2 && nbLegumes <= 4) return 1;
+    return 2;
+}
+
+int humeurFruits(int nbFruits)
+{
+    if (nbFruits >= 0 && nbFruits <= 1) return 0;
+    if (nbFruits >= 2 && nbFruits <= 4) return 1;
+    return 2;
+}
+
+
+void afficherBarre(int valeur, int max) {} 
+
+void afficherResume(int *conso, int size, const char *categories[], const char *emojis_fixes[], const char *h_bonbons[], const char *h_legumes[], const char *h_fruits[], int max_val)
+{
+    printf("============== Resume du jour ==============\n");
+    for (int i = 0; i < size; i++) {
+        printf("%s: %2d %s ", categories[i], conso[i], emojis_fixes[i]);
+        
+        if (i == BONBONS) {
+            printf("%s", h_bonbons[humeurBonbons(conso[i])]);
+        } else if (i == LEGUMES) {
+            printf("%s", h_legumes[humeurLegumes(conso[i])]);
+        } else if (i == FRUITS) {
+            printf("%s", h_fruits[humeurFruits(conso[i])]);
+        }
+        
+        printf("\n");
+    }
+    printf("============================================\n");
+}
 
 
 int charger(int *conso, int size)
@@ -113,7 +153,4 @@ int sauvegarder(int *conso, int size)
 
 void afficherObjectifsEtScore(int *conso, const int *objectifs, int size, const char *categories[]) {}
 int calculerScoreSante(const int *conso, const int *objectifs, int size) { return 0; }
-int humeurBonbons(int nbBonbons) { return 0; }
-int humeurLegumes(int nbLegumes) { return 0; }
-int humeurFruits(int nbFruits) { return 0; }
 void afficherBarre(int valeur, int max) {}
