@@ -85,7 +85,25 @@ int humeurFruits(int nbFruits)
 }
 
 
-void afficherBarre(int valeur, int max) {} 
+
+
+void afficherBarre(int valeur, int max)
+{
+    if (max <= 0) max = 1;
+
+    if (valeur < 0) valeur = 0;
+    if (valeur > max) valeur = max;
+
+    int casesPleines = (valeur * 10) / max;
+    
+    for (int i = 0; i < 10; i++) {
+        if (i < casesPleines) {
+            printf("#");
+        } else {
+            printf(".");
+        }
+    }
+}
 
 void afficherResume(int *conso, int size, const char *categories[], const char *emojis_fixes[], const char *h_bonbons[], const char *h_legumes[], const char *h_fruits[], int max_val)
 {
@@ -94,17 +112,20 @@ void afficherResume(int *conso, int size, const char *categories[], const char *
         printf("%s: %2d %s ", categories[i], conso[i], emojis_fixes[i]);
         
         if (i == BONBONS) {
-            printf("%s", h_bonbons[humeurBonbons(conso[i])]);
+            printf("%s ", h_bonbons[humeurBonbons(conso[i])]);
         } else if (i == LEGUMES) {
-            printf("%s", h_legumes[humeurLegumes(conso[i])]);
+            printf("%s ", h_legumes[humeurLegumes(conso[i])]);
         } else if (i == FRUITS) {
-            printf("%s", h_fruits[humeurFruits(conso[i])]);
+            printf("%s ", h_fruits[humeurFruits(conso[i])]);
         }
         
+        afficherBarre(conso[i], max_val);
         printf("\n");
     }
     printf("============================================\n");
 }
+
+
 
 
 int charger(int *conso, int size)
