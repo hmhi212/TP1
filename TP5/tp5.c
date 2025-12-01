@@ -26,7 +26,7 @@ int main()
 
         switch (choix) {
             case 1:
-                printf("Ajouter une consommation...\n");
+                ajouterConsommation(consommations, NB_CATEGORIES, CATEGORIES);
                 break;
             case 2:
                 printf("Afficher le resume du jour...\n");

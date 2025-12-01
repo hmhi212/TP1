@@ -31,8 +31,34 @@ void initialiser(int *conso, int size)
 
 void ajouterConsommation(int *conso, int size, const char *categories[])
 {
+    int choix_cat;
+    int quantite;
+
+    printf("Quelle categorie voulez vous modifier\n");
+    for (int i = 0; i < size; i++) {
+        printf("%d. %s\n", i + 1, categories[i]);
+    }
+    printf("Votre choix: ");
     
+    if (scanf("%d", &choix_cat) != 1 || choix_cat < 1 || choix_cat > size) {
+        printf("Choix de categorie invalide.\n");
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF);
+        return;
+    }
+
+    printf("Combien d unites ajouter ? ");
+    if (scanf("%d", &quantite) != 1 || quantite < 0) {
+        printf("Quantite invalide.\n");
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF);
+        return;
+    }
+
+    conso[choix_cat - 1] += quantite;
+    printf("Consommation mise a jour.\n");
 }
+
 
 void afficherResume(int *conso, int size, const char *categories[], const char *emojis_fixes[], const char *h_bonbons[], const char *h_legumes[], const char *h_fruits[], int max_val)
 {
