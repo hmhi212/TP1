@@ -24,14 +24,16 @@ int main()
         afficherMenu();
         choix = lireChoix();
 
+
         switch (choix) {
             case 1:
                 ajouterConsommation(consommations, NB_CATEGORIES, CATEGORIES);
                 break;
             case 2:
-                printf("Afficher le resume du jour...\n");
+                afficherResume(consommations, NB_CATEGORIES, CATEGORIES, NULL, NULL, NULL, NULL, 0); 
                 break;
             case 3:
+
                 printf("Sauvegarder et quitter...\n");
                 break;
             default:

@@ -65,7 +65,25 @@ void afficherResume(int *conso, int size, const char *categories[], const char *
     
 }
 
-int charger(int *conso, int size) { return 0; }
+int charger(int *conso, int size)
+{
+    FILE *f = fopen("consommation.txt", "r");
+    if (f == NULL) {
+        return 0;
+    }
+
+    for (int i = 0; i < size; i++) {
+        if (fscanf(f, "%d", &conso[i]) != 1) {
+            fclose(f);
+            return 0;
+        }
+    }
+
+    fclose(f);
+    return 1;
+}
+
+
 int sauvegarder(int *conso, int size) { return 0; }
 void afficherObjectifsEtScore(int *conso, const int *objectifs, int size, const char *categories[]) {}
 int calculerScoreSante(const int *conso, const int *objectifs, int size) { return 0; }
