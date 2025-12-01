@@ -172,6 +172,60 @@ int sauvegarder(int *conso, int size)
 }
 
 
-void afficherObjectifsEtScore(int *conso, const int *objectifs, int size, const char *categories[]) {}
-int calculerScoreSante(const int *conso, const int *objectifs, int size) { return 0; }
-void afficherBarre(int valeur, int max) {}
+
+
+int calculerScoreSante(const int *conso, const int *objectifs, int size)
+{
+    const int EAU_IDX = 0;
+    const int CAFE_IDX = 1;
+    const int BONBONS_IDX = 2;
+    const int LEGUMES_IDX = 4;
+    const int FRUITS_IDX = 5;
+    const int PROTEINES_IDX = 6;
+    
+    int score = 50;
+
+    if (conso[EAU_IDX] >= objectifs[EAU_IDX]) score += 10;
+    if (conso[LEGUMES_IDX] >= objectifs[LEGUMES_IDX]) score += 10;
+    if (conso[FRUITS_IDX] >= objectifs[FRUITS_IDX]) score += 10;
+    if (conso[PROTEINES_IDX] >= objectifs[PROTEINES_IDX]) score += 10;
+
+    int malus_bonbons = 0;
+    if (conso[BONBONS_IDX] > 5) {
+        malus_bonbons = conso[BONBONS_IDX] - 5;
+        if (malus_bonbons > 15) malus_bonbons = 15;
+    }
+    score -= malus_bonbons;
+
+    int malus_cafe = 0;
+    if (conso[CAFE_IDX] > 3) {
+        malus_cafe = (conso[CAFE_IDX] - 3) * 2;
+        if (malus_cafe > 20) malus_cafe = 20;
+    }
+    score -= malus_cafe;
+
+    if (score < 0) return 0;
+    if (score > 100) return 100;
+    return score;
+}
+
+void afficherObjectifsEtScore(int *conso, const int *objectifs, int size, const char *categories[])
+{
+    printf("====== Objectifs du jour ======\n");
+    printf("Categorie Objectif Atteint ?\n");
+
+    for (int i = 0; i < size; i++) {
+        printf("%s: ", categories[i]);
+        if (objectifs[i] > 0) {
+            printf("%2d", objectifs[i]);
+            printf(" %s\n", (conso[i] >= objectifs[i]) ? "O" : "X");
+        } else {
+            printf("(pas d objectif)\n");
+        }
+    }
+    
+    int score = calculerScoreSante(conso, objectifs, size);
+    printf("--------------------------------\n");
+    printf("Score de sante du jour : %d / 100\n", score);
+    printf("================================\n");
+}

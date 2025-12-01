@@ -2,9 +2,27 @@
 #include <stdlib.h>
 #include "suivi.h"
 
+void afficherMenu()
+{
+    printf("==== Suivi de consommation ====\n");
+    printf("1. Ajouter une consommation\n");
+    printf("2. Afficher le resume du jour\n");
+    printf("3. Afficher les objectifs et le score\n");
+    printf("4. Sauvegarder et quitter\n");
+    printf("Votre choix : ");
+}
+
 int main()
 {
     const int NB_CATEGORIES = 7;
+    const int EAU_IDX = 0;
+    const int CAFE_IDX = 1;
+    const int BONBONS_IDX = 2;
+    const int GATEAU_IDX = 3;
+    const int LEGUMES_IDX = 4;
+    const int FRUITS_IDX = 5;
+    const int PROTEINES_IDX = 6;
+    
     const char* CATEGORIES[] = {
         "Eau      ",
         "Cafe     ",
@@ -23,7 +41,13 @@ int main()
     const int MAX_BARRE = 20;
 
     int consommations[NB_CATEGORIES];
+    int objectifs[NB_CATEGORIES] = {0};
     
+    objectifs[EAU_IDX] = 8;
+    objectifs[LEGUMES_IDX] = 5;
+    objectifs[FRUITS_IDX] = 3;
+    objectifs[PROTEINES_IDX] = 2;
+
     if (charger(consommations, NB_CATEGORIES) == 0) {
         printf("<< Aucune sauvegarde trouvée >>\n");
         initialiser(consommations, NB_CATEGORIES);
@@ -32,7 +56,7 @@ int main()
     }
 
     int choix = 0;
-    while (choix != 3) {
+    while (choix != 4) {
         afficherMenu();
         choix = lireChoix();
 
@@ -41,9 +65,12 @@ int main()
                 ajouterConsommation(consommations, NB_CATEGORIES, CATEGORIES);
                 break;
             case 2:
-                afficherResume(consommations, NB_CATEGORIES, CATEGORIES, EMOJIS_FIXES, HUMEUR_BONBONS, HUMEUR_LEGUMES, HUMEUR_FRUITS, MAX_BARRE); 
+                afficherResume(consommations, NB_CATEGORIES, CATEGORIES, EMOJIS_FIXES, HUMEUR_BONBONS, HUMEUR_LEGUMES, HUMEUR_FRUITS, MAX_BARRE);
                 break;
             case 3:
+                afficherObjectifsEtScore(consommations, objectifs, NB_CATEGORIES, CATEGORIES);
+                break;
+            case 4:
                 if (sauvegarder(consommations, NB_CATEGORIES) == 1) {
                     printf("Sauvegarde reussie. Au revoir.\n");
                 } else {
