@@ -1,5 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <windows.h>
+#include <locale.h>
+#ifndef CP_UTF8
+#define CP_UTF8 65001
+#endif
 #include "suivi.h"
 
 void afficherMenu()
@@ -7,7 +14,8 @@ void afficherMenu()
     printf("==== Suivi de consommation ====\n");
     printf("1. Ajouter une consommation\n");
     printf("2. Afficher le resume du jour\n");
-    printf("3. Sauvegarder et quitter\n");
+    printf("3. Afficher les objectifs et le score\n");
+    printf("4. Sauvegarder et quitter\n");
     printf("Votre choix : ");
 }
 
@@ -29,14 +37,14 @@ void initialiser(int *conso, int size)
     }
 }
 
-void ajouterConsommation(int *conso, int size, const char *categories[])
+void ajouterConsommation(int *conso, int size, const char *categories[], const char *emojis[])
 {
     int choix_cat;
     int quantite;
 
     printf("Quelle categorie voulez vous modifier\n");
     for (int i = 0; i < size; i++) {
-        printf("%d. %s\n", i + 1, categories[i]);
+        printf("%d. %s %s\n", i + 1, categories[i], emojis[i]);
     }
     printf("Votre choix: ");
     
@@ -58,76 +66,12 @@ void ajouterConsommation(int *conso, int size, const char *categories[])
     conso[choix_cat - 1] += quantite;
     printf("Consommation mise a jour.\n");
 }
-
-
-
-
-int humeurBonbons(int nbBonbons)
+void utf8()
 {
-    if (nbBonbons >= 0 && nbBonbons <= 3) return 0;
-    if (nbBonbons >= 4 && nbBonbons <= 7) return 1;
-    if (nbBonbons >= 8 && nbBonbons <= 12) return 2;
-    return 3;
+    SetConsoleOutputCP(CP_UTF8);  
+    SetConsoleCP(CP_UTF8);        
+    setlocale(LC_ALL, ".UTF-8");
 }
-
-int humeurLegumes(int nbLegumes)
-{
-    if (nbLegumes >= 0 && nbLegumes <= 1) return 0;
-    if (nbLegumes >= 2 && nbLegumes <= 4) return 1;
-    return 2;
-}
-
-int humeurFruits(int nbFruits)
-{
-    if (nbFruits >= 0 && nbFruits <= 1) return 0;
-    if (nbFruits >= 2 && nbFruits <= 4) return 1;
-    return 2;
-}
-
-
-
-
-void afficherBarre(int valeur, int max)
-{
-    if (max <= 0) max = 1;
-
-    if (valeur < 0) valeur = 0;
-    if (valeur > max) valeur = max;
-
-    int casesPleines = (valeur * 10) / max;
-    
-    for (int i = 0; i < 10; i++) {
-        if (i < casesPleines) {
-            printf("#");
-        } else {
-            printf(".");
-        }
-    }
-}
-
-void afficherResume(int *conso, int size, const char *categories[], const char *emojis_fixes[], const char *h_bonbons[], const char *h_legumes[], const char *h_fruits[], int max_val)
-{
-    printf("============== Resume du jour ==============\n");
-    for (int i = 0; i < size; i++) {
-        printf("%s: %2d %s ", categories[i], conso[i], emojis_fixes[i]);
-        
-        if (i == BONBONS) {
-            printf("%s ", h_bonbons[humeurBonbons(conso[i])]);
-        } else if (i == LEGUMES) {
-            printf("%s ", h_legumes[humeurLegumes(conso[i])]);
-        } else if (i == FRUITS) {
-            printf("%s ", h_fruits[humeurFruits(conso[i])]);
-        }
-        
-        afficherBarre(conso[i], max_val);
-        printf("\n");
-    }
-    printf("============================================\n");
-}
-
-
-
-
 int charger(int *conso, int size)
 {
     FILE *f = fopen("consommation.txt", "r");
@@ -145,9 +89,6 @@ int charger(int *conso, int size)
     fclose(f);
     return 1;
 }
-
-
-
 
 int sauvegarder(int *conso, int size)
 {
@@ -171,17 +112,78 @@ int sauvegarder(int *conso, int size)
     return 1;
 }
 
+int humeurBonbons(int nbBonbons)
+{
+    if (nbBonbons >= 0 && nbBonbons <= 3) return 0;
+    if (nbBonbons >= 4 && nbBonbons <= 7) return 1;
+    if (nbBonbons >= 8 && nbBonbons <= 12) return 2;
+    return 3;
+}
 
+int humeurLegumes(int nbLegumes)
+{
+    if (nbLegumes >= 0 && nbLegumes <= 1) return 0;
+    if (nbLegumes >= 2 && nbLegumes <= 4) return 1;
+    return 2;
+}
 
+int humeurFruits(int nbFruits)
+{
+    if (nbFruits >= 0 && nbFruits <= 1) return 0;
+    if (nbFruits >= 2 && nbFruits <= 4) return 1;
+    return 2;
+}
+
+void afficherBarre(int valeur, int max)
+{
+    if (max <= 0) max = 1;
+
+    if (valeur < 0) valeur = 0;
+    if (valeur > max) valeur = max;
+
+    int casesPleines = (valeur * 10) / max;
+    
+    for (int i = 0; i < 10; i++) {
+        if (i < casesPleines) {
+            printf("#");
+        } else {
+            printf(".");
+        }
+    }
+}
+
+void afficherResume(int *conso, int size, const char *categories[], const char *emojis_fixes[], const char *h_bonbons[], const char *h_legumes[], const char *h_fruits[], int max_val)
+{
+    const int BONBONS_IDX = 2;
+    const int LEGUMES_IDX = 4;
+    const int FRUITS_IDX = 5;
+    
+    printf("============== Resume du jour ==============\n");
+    for (int i = 0; i < size; i++) {
+        printf("%s: %2d %s ", categories[i], conso[i], emojis_fixes[i]);
+        
+        if (i == BONBONS_IDX) {
+            printf("%s ", h_bonbons[humeurBonbons(conso[i])]);
+        } else if (i == LEGUMES_IDX) {
+            printf("%s ", h_legumes[humeurLegumes(conso[i])]);
+        } else if (i == FRUITS_IDX) {
+            printf("%s ", h_fruits[humeurFruits(conso[i])]);
+        }
+        
+        afficherBarre(conso[i], max_val);
+        printf("\n");
+    }
+    printf("============================================\n");
+}
 
 int calculerScoreSante(const int *conso, const int *objectifs, int size)
 {
     const int EAU_IDX = 0;
     const int CAFE_IDX = 1;
     const int BONBONS_IDX = 2;
+    const int PROTEINES_IDX = 6;
     const int LEGUMES_IDX = 4;
     const int FRUITS_IDX = 5;
-    const int PROTEINES_IDX = 6;
     
     int score = 50;
 
