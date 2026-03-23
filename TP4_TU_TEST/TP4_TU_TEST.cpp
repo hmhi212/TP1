@@ -33,5 +33,17 @@ namespace TP4TUTEST
 		{
 			Assert::AreEqual(5, max2(3, 5));
 		}
+		TEST_METHOD(TestFactorielle1)
+		{
+			Assert::AreEqual(1, factorielle(0));
+		}
+		TEST_METHOD(TestFactorielle2)
+		{
+			Assert::AreEqual(1, factorielle(1));
+		}
+		TEST_METHOD(TestFactorielle3)
+		{
+			Assert::AreEqual(24, factorielle(4));
+		}
 	};
 }

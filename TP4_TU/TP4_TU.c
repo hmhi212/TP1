@@ -17,11 +17,12 @@ int max2(int a, int b) {
 
 int factorielle(int n) {
     int resultat = 1;
-    for (int i = 1; i < n; i++) {
+    for (int i = 1; i <= n; i++) { 
         resultat *= i;
     }
     return resultat;
 }
+
 
 int contientMajuscule(const char* chaine) {
     int i = 0;
