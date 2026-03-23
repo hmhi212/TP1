@@ -72,6 +72,19 @@ int load_songs(const char *filename, Song **songs, int *taille) {
             count++;
         }
     }
+    void melanger_chansons(Song *songs, int n) {
+    if (n <= 1) return;
+
+    for (int i = n - 1; i > 0; i--) {
+        
+        int j = rand() % (i + 1);
+
+    
+        Song temp = songs[i];
+        songs[i] = songs[j];
+        songs[j] = temp;
+    }
+}
     fclose(f);
     return count;
 }
