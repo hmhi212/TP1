@@ -45,5 +45,21 @@ namespace TP4TUTEST
 		{
 			Assert::AreEqual(24, factorielle(4));
 		}
+		TEST_METHOD(TestContientMajuscule1)
+		{
+			Assert::AreEqual(0, contientMajuscule("bonjour"));
+		}
+		TEST_METHOD(TestContientMajuscule2)
+		{
+			Assert::AreEqual(1, contientMajuscule("bonJour"));
+		}
+		TEST_METHOD(TestContientMajuscule3)
+		{
+			Assert::AreEqual(1, contientMajuscule("ABC"));
+		}
+		TEST_METHOD(TestContientMajuscul41)
+		{
+			Assert::AreEqual(0, contientMajuscule(""));
+		}
 	};
 }
