@@ -57,9 +57,21 @@ namespace TP4TUTEST
 		{
 			Assert::AreEqual(1, contientMajuscule("ABC"));
 		}
-		TEST_METHOD(TestContientMajuscul41)
+		TEST_METHOD(TestContientMajuscul4)
 		{
 			Assert::AreEqual(0, contientMajuscule(""));
+		}
+		TEST_METHOD(TestDivisionExact1)
+		{
+			Assert::AreEqual(1, divisionExacte(10,2));
+		}
+		TEST_METHOD(TestDivisionExact2)
+		{
+			Assert::AreEqual(0, divisionExacte(10,3));
+		}
+		TEST_METHOD(TestDivisionExact3)
+		{
+			Assert::AreEqual(1, divisionExacte(0, 5));
 		}
 	};
 }
