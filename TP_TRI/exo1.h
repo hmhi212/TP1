@@ -19,5 +19,5 @@ typedef struct {
 
 int comparerDates(Date d1, Date d2);
 void saisirEtTrier(Medicament Tab[80]); 
-
+void rechercheParacetamol(Medicament Tab[80]); 
 #endif

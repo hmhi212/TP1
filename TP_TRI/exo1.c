@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "exo1.h"
 
 int comparerDates(Date d1, Date d2) {
@@ -21,4 +22,23 @@ void saisirEtTrier(Medicament Tab[80]) {
             }
         }
     } 
+}
+void rechercheParacetamol(Medicament Tab[80]) {
+    int debut = 0, fin = 79, mil, trouve = 0; 
+    char val[] = "paracetamol"; 
+
+    while (trouve == 0 && debut <= fin) { 
+        mil = (debut + fin) / 2; 
+        int comp = strcmp(Tab[mil].nom, val);
+        if (comp == 0) {
+            trouve = 1;
+        } else if (comp < 0) {
+            debut = mil + 1;
+        } else {
+            fin = mil - 1; 
+        }
+    }
+
+    if (trouve == 1) printf("%s au rang %d\n", val, mil); 
+    else printf("Non trouve\n"); 
 }
